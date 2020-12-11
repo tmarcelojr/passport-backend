@@ -40,7 +40,7 @@ mongoose.connect(
 // );
 
 const corsOptions = {
-	origin: /definitelyNotPassingRegExp/,
+	origin: 'https://c-passport.herokuapp.com/',
 	methods: ['GET'],
 	allowedHeaders: ['Origin','X-Requested-With','contentType','Content-Type','Accept','Authorization'],
 	credentials: true,
