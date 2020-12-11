@@ -36,7 +36,7 @@ mongoose.connect(
 // Need to set up CORS like this for auth to work
 
 const corsOptions = {
-	origin: 'https://c-passport.herokuapp.com',
+	origin: '*',
 	optionsSuccessStatus = 200,
 	methods: 'GET, PUT, POST'
 }
