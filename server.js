@@ -41,7 +41,7 @@ mongoose.connect(
 
 const corsOptions = {
 	origin: 'https://c-passport.herokuapp.com/',
-	methods: ['GET'],
+	methods: ['GET', 'POST'],
 	allowedHeaders: ['Origin','X-Requested-With','contentType','Content-Type','Accept','Authorization'],
 	credentials: true,
 	optionsSuccessStatus: 200
