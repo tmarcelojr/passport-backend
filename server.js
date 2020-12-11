@@ -25,7 +25,7 @@ mongoose.connect(
 	"mongodb+srv://admin:admin@cluster0.n1wom.mongodb.net/auth?retryWrites=true&w=majority",
 	{
 		useNewUrlParser: true,
-		useUnifiedTopology: true
+		// useUnifiedTopology: true
 	},
 	() => {
 		console.log('Mongoose is connected');
