@@ -16,12 +16,11 @@ const User = require('./user');
 // let mongoURI = "";
 
 // if (process.env.NODE_ENV === "production") {
-// 	console.log(procress.eng.DB_URL)
 //   mongoURI = process.env.DB_URL;
 // } else {
 //   mongoURI = "mongodb://localhost/apassport";
 // }
-
+console.log('!!!!!!!!!!!!!!!!!!!!!!!!', process.env.DB_URL)
 mongoose.connect(
 	process.env.DB_URL,
 	{
