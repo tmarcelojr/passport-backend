@@ -34,15 +34,9 @@ mongoose.connect(
 );
 
 // Need to set up CORS like this for auth to work
-
-const corsOptions = {
-	origin: 'https://c-passport.herokuapp.com',
-	optionsSuccessStatus = 200,
-	methods: 'GET, PUT, POST'
-}
 app.use(
 	cors({
-		corsOptions,
+		origin: true,
 		credentials: true
 	})
 );
@@ -83,7 +77,6 @@ app.post('/login', (req, res, next) => {
 });
 
 app.post('/register', (req, res) => {
-	res.header("Access-Control-Allow-Origin", "*");
 	User.findOne({ username: req.body.username }, async (err, doc) => {
 		if (err) throw err;
 		if (doc) res.send('User Already Exists');
