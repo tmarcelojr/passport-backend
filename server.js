@@ -22,7 +22,7 @@ const User = require('./user');
 // }
 console.log('!!!!!!!!!!!!!!!!!!!!!!!!', process.env.DB_URL)
 mongoose.connect(
-	process.env.DB_URL,
+	"mongodb+srv://admin:admin@cluster0.n1wom.mongodb.net/auth?retryWrites=true&w=majority",
 	{
 		useNewUrlParser: true,
 		useUnifiedTopology: true
