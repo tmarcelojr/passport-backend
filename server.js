@@ -20,8 +20,6 @@ if (process.env.NODE_ENV === "production") {
   mongoURI = "mongodb://localhost/apassport";
 }
 
-
-
 mongoose.connect(
 	mongoURI,
 	{
@@ -61,7 +59,7 @@ require('./passportConfig')(passport)
 
 
 // Routes
-app.post('/login', (req, res, next) => {
+app.post('/login', cors({credentials: true}), (req, res, next) => {
   // use local strategy we defined
   passport.authenticate('local', (err, user, info) => {
     if (err) throw err
@@ -76,7 +74,7 @@ app.post('/login', (req, res, next) => {
   })(req, res, next)
 });
 
-app.post('/register', (req, res) => {
+app.post('/register', cors({credentials: true}), (req, res) => {
 	User.findOne({ username: req.body.username }, async (err, doc) => {
 		if (err) throw err;
 		if (doc) res.send('User Already Exists');
