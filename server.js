@@ -13,16 +13,17 @@ const app = express();
 const User = require('./user');
 
 
-let mongoURI = "";
+// let mongoURI = "";
 
-if (process.env.NODE_ENV === "production") {
-  mongoURI = process.env.DB_URL;
-} else {
-  mongoURI = "mongodb://localhost/apassport";
-}
+// if (process.env.NODE_ENV === "production") {
+// 	console.log(procress.eng.DB_URL)
+//   mongoURI = process.env.DB_URL;
+// } else {
+//   mongoURI = "mongodb://localhost/apassport";
+// }
 
 mongoose.connect(
-	mongoURI,
+	process.env.DB_URL,
 	{
 		useNewUrlParser: true,
 		useUnifiedTopology: true
