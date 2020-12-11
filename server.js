@@ -34,7 +34,7 @@ mongoose.connect(
 // Need to set up CORS like this for auth to work
 app.use(
 	cors({
-		origin: true,
+		origin: 'https://c-passport.herokuapp.com/',
 		credentials: true
 	})
 );
@@ -59,7 +59,7 @@ require('./passportConfig')(passport)
 
 
 // Routes
-app.post('/login', cors({credentials: true}), (req, res, next) => {
+app.post('/login', (req, res, next) => {
   // use local strategy we defined
   passport.authenticate('local', (err, user, info) => {
     if (err) throw err
@@ -74,7 +74,7 @@ app.post('/login', cors({credentials: true}), (req, res, next) => {
   })(req, res, next)
 });
 
-app.post('/register', cors({credentials: true}), (req, res) => {
+app.post('/register', (req, res) => {
 	User.findOne({ username: req.body.username }, async (err, doc) => {
 		if (err) throw err;
 		if (doc) res.send('User Already Exists');
