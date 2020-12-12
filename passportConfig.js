@@ -44,6 +44,7 @@ module.exports = function(passport) {
         username: user.username,
         message: "In here you only want to return the username :)"
       }
+      req.sessions.username = user.username
       cb(err, userInfo)
     })
   })
