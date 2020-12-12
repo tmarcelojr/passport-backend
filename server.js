@@ -34,16 +34,16 @@ mongoose.connect(
 
 // MIDDLEWARE
 // Need to set up CORS like this for auth to work
-app.use(
-	cors({
-		// origin typically deployed react app and localhost
-		origin: ['https://c-passport.herokuapp.com/', 'http://localhost:3000/'],
-		credentials: true
-	})
-);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+	cors({
+		// origins typically deployed react app and localhost
+		origin: ['https://c-passport.herokuapp.com', 'http://localhost:3000'],
+		credentials: true
+	})
+	);
+
 app.use(
 	session({
 		// We will use secret in our cookie-parser
