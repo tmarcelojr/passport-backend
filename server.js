@@ -68,7 +68,6 @@ app.post('/login', (req, res, next) => {
 		else {
 			req.login(user, (err) => {
 				if (err) throw err;
-				res.session.user = req.user
 				res.send('Successfully Authenticated');
 				console.log(req.user);
 			});
