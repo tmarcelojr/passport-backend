@@ -6,11 +6,13 @@ const passportLocal = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session)
 const bodyParser = require('body-parser');
 const { deserializeUser } = require('passport');
 const app = express();
 const User = require('./user');
 const passportConfig = require('./passportConfig');
+const { json } = require('body-parser');
 
 // DB CONNECTION
 let mongoURI = '';
@@ -51,7 +53,8 @@ app.use(
 		// We will use secret in our cookie-parser
 		secret: 'this will be our secret code',
 		resave: false,
-		saveUninitialized: true
+		saveUninitialized: false,
+		store: new MongoStore({ mongooseConnection: mongoose.connection})
 	})
 );
 
@@ -102,12 +105,12 @@ app.post('/register', (req, res, next) => {
 // accessible throughout whole app
 app.get('/user', (req, res) => {
 	console.log('user', req.user);
-	res.json({data: 'hi', user: req.user})
+	// res.json({data: 'hi', user: req.user})
 	// if(req.user) {
 	// 	const resJson = res.json(req.user)
 	// 	res.send(resJson)
 	// }
-	// res.send(req.user);
+	res.send(req.user);
 });
 
 // Logout
