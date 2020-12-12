@@ -10,15 +10,15 @@ const bodyParser = require('body-parser');
 const { deserializeUser } = require('passport');
 const app = express();
 const User = require('./user');
-
+const passportConfig = require('./passportConfig');
 
 // DB CONNECTION
-let mongoURI = "";
+let mongoURI = '';
 
-if (process.env.NODE_ENV === "production") {
-  mongoURI = process.env.DB_URL;
+if (process.env.NODE_ENV === 'production') {
+	mongoURI = process.env.DB_URL;
 } else {
-  mongoURI = "mongodb://localhost/apassport";
+	mongoURI = 'mongodb://localhost/apassport';
 }
 
 mongoose.connect(
@@ -33,20 +33,19 @@ mongoose.connect(
 );
 
 // MIDDLEWARE
-
-// Pass in the actual value of secret
-app.use(cookieParser('this will be our secret code'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Need to set up CORS like this for auth to work
 app.use(
 	cors({
 		// origins typically deployed react app and localhost
-		origin: ['https://c-passport.herokuapp.com', 'http://localhost:3000'],
+		origin: [ 'https://c-passport.herokuapp.com', 'http://localhost:3000' ],
 		credentials: true
 	})
-	);
+);
 
+// Pass in the actual value of secret
+app.use(cookieParser('this will be our secret code'));
 app.use(
 	session({
 		// We will use secret in our cookie-parser
@@ -54,51 +53,50 @@ app.use(
 		resave: false,
 		saveUninitialized: true,
 		cookie: {
-			secure: true
+			secure: true,
+			expires: false
 		}
 	})
 );
 
-
-app.use(passport.initialize())
-app.use(passport.session())
-require('./passportConfig')(passport)
-
+app.use(passport.initialize());
+app.use(passport.session());
+require('./passportConfig')(passport);
 
 // ROUTES
 app.post('/login', (req, res, next) => {
-  // use local strategy we defined
-  passport.authenticate('local', (err, user, info) => {
-    if (err) throw err;
-    if (!user) res.send('No User Exists')
-    else {
-      req.login(user, err => {
-        if (err) throw err
-        res.send('Successfully Authenticated')
-				console.log(req.user)
-      })
-    }
-  })(req, res, next)
+	// use local strategy we defined
+	passport.authenticate('local', (err, user, info) => {
+		if (err) throw err;
+		if (!user) res.send('No User Exists');
+		else {
+			req.login(user, (err) => {
+				if (err) throw err;
+				res.send('Successfully Authenticated');
+				console.log(req.user);
+			});
+		}
+	})(req, res, next);
 });
 
 app.post('/register', (req, res, next) => {
 	User.findOne({ username: req.body.username }, async (err, doc) => {
-		if (err) throw err
+		if (err) throw err;
 		if (doc) res.send('User Already Exists');
 		if (!doc) {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10)
+			const hashedPassword = await bcrypt.hash(req.body.password, 10);
 			const newUser = new User({
 				username: req.body.username,
 				password: hashedPassword
 			});
 			await newUser.save();
 			// if successful automatically log in user
-			passport.authenticate('local', (err,  user) => {
-				req.login(user, err => {
-					if (err) throw err
-					res.send('User Created and Logged In')
-				})
-			})(req, res, next)
+			passport.authenticate('local', (err, user) => {
+				req.login(user, (err) => {
+					if (err) throw err;
+					res.send('User Created and Logged In');
+				});
+			})(req, res, next);
 		}
 	});
 });
@@ -107,20 +105,20 @@ app.post('/register', (req, res, next) => {
 // req object will not be a user object containing session data
 // accessible throughout whole app
 app.get('/user', (req, res) => {
-	console.log('user', req.user)
-	res.send(req.user)
+	console.log('user', req.user);
+	res.send(req.user);
 });
 
 // Logout
 app.get('/logout', (req, res) => {
-	req.logOut()
-	req.session.destroy(err => {
-		res.send('Logged out')
-	})
-})
+	req.logOut();
+	req.session.destroy((err) => {
+		res.send('Logged out');
+	});
+});
 
-app.set("port", process.env.PORT || 4000);
+app.set('port', process.env.PORT || 4000);
 
-app.listen(app.get("port"), () => {
-  console.log(`✅ PORT: ${app.get("port")} 🌟`);
+app.listen(app.get('port'), () => {
+	console.log(`✅ PORT: ${app.get('port')} 🌟`);
 });
