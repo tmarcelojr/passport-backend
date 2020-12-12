@@ -64,7 +64,7 @@ require('./passportConfig')(passport)
 app.post('/login', (req, res, next) => {
   // use local strategy we defined
   passport.authenticate('local', (err, user, info) => {
-    if (err) throw err
+    if (err) throw err;
     if (!user) res.send('No User Exists')
     else {
       req.login(user, err => {
@@ -76,9 +76,9 @@ app.post('/login', (req, res, next) => {
   })(req, res, next)
 });
 
-app.post('/register', (req, res) => {
+app.post('/register', (req, res, next) => {
 	User.findOne({ username: req.body.username }, async (err, doc) => {
-		if (err) throw err;
+		if (err) throw err
 		if (doc) res.send('User Already Exists');
 		if (!doc) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10)
@@ -87,7 +87,13 @@ app.post('/register', (req, res) => {
 				password: hashedPassword
 			});
 			await newUser.save();
-			res.send('User Created');
+			// if successful automatically log in user
+			passport.authenticate('local', (err,  user) => {
+				req.login(user, err => {
+					if (err) throw err
+					res.send('User Created and Logged In')
+				})
+			})(req, res, next)
 		}
 	});
 });
@@ -95,11 +101,17 @@ app.post('/register', (req, res) => {
 // req.user stores the user
 // req object will not be a user object containing session data
 // accessible throughout whole app
-app.get('/user', (req, res) => res.send(req.user));
+app.get('/user', (req, res) => {
+	console.log('user', req.user)
+	res.send(req.user)
+});
 
 // Logout
-app.get('/logout', () => {
-	req.logout()
+app.get('/logout', (req, res) => {
+	req.logOut()
+	req.session.destroy(err => {
+		res.send('Logged out')
+	})
 })
 
 app.set("port", process.env.PORT || 4000);
