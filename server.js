@@ -69,11 +69,11 @@ app.post('/login', (req, res, next) => {
 		if (err) throw err;
 		if (!user) res.send('No User Exists');
 		else {
+			req.session.username = user.username
+			req.session.userId = user._id
 			req.login(user, (err) => {
 				if (err) throw err;
-				req.session.username = user.username
-				req.session.userId = user._id
-				res.send('Successfully Authenticated', req.session);
+				res.send('Successfully Authenticated');
 				console.log(req.user);
 			});
 		}
@@ -106,7 +106,7 @@ app.post('/register', (req, res, next) => {
 // req object will not be a user object containing session data
 // accessible throughout whole app
 app.get('/user', (req, res) => {
-	console.log('req', req.sessions)
+	res.send(req.user)
 	// console.log('user', req.user);
 	// res.json({data: 'hi', user: req.user})
 	// if(req.user) {
