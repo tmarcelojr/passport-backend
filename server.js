@@ -104,6 +104,7 @@ app.post('/register', (req, res, next) => {
 // req object will not be a user object containing session data
 // accessible throughout whole app
 app.get('/user', (req, res) => {
+	console.log('res', res)
 	console.log('user', req.user);
 	// res.json({data: 'hi', user: req.user})
 	// if(req.user) {
