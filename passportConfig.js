@@ -38,14 +38,15 @@ module.exports = function(passport) {
   // find user from database that matches cookie id
   passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
-      console.log('user', user)
-      done(err, user)
+      console.log('user', typeof(user))
+      // done(err, user)
       // IMPORTANT STEP THAT WE MISSED. WE NEED TO SEND INFO BACK
-      // const userInfo = {
-      //   username: user.username,
-      //   message: "In here you only want to return the username :)"
-      // }
-      // cb(err, userInfo)
+      const userInfo = {
+        username: user.username,
+        message: "In here you only want to return the username :)"
+      }
+      console.log('this is our user', userInfo)
+      cb(err, userInfo)
     })
   })
 }
