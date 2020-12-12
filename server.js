@@ -48,7 +48,7 @@ app.use(
 // Pass in the actual value of secret
 app.use(cookieParser('this will be our secret code'));
 
-app.set('trust proxy', 1)
+app.enable('trust proxy')
 app.use(
 	session({
 		// We will use secret in our cookie-parser
