@@ -40,8 +40,7 @@ app.use(
 	cors({
 		// origins typically deployed react app and localhost
 		origin: [ 'https://c-passport.herokuapp.com', 'http://localhost:3000' ],
-		credentials: true,
-		methods: 'GET, HEAD, PUT, PATCH, POST, DELETE'
+		credentials: true
 	})
 );
 
