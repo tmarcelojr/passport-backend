@@ -49,7 +49,11 @@ app.use(
 		// We will use secret in our cookie-parser
 		secret: 'this will be our secret code',
 		resave: true,
-		saveUninitialized: true
+		saveUninitialized: true,
+		cookie: {
+			secure: false,
+			maxAge: (4 * 60 * 60 * 1000) // 4 hours cookie
+		}
 	})
 );
 
