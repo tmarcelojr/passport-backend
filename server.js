@@ -1,9 +1,8 @@
-require('dotenv').config()
 const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
-const passportlocal = require('passport-local').Strategy;
+const passportLocal = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
@@ -13,34 +12,36 @@ const app = express();
 const User = require('./user');
 
 
-// let mongoURI = "";
+// DB CONNECTION
+let mongoURI = "";
 
-// if (process.env.NODE_ENV === "production") {
-//   mongoURI = process.env.DB_URL;
-// } else {
-//   mongoURI = "mongodb://localhost/apassport";
-// }
-console.log('!!!!!!!!!!!!!!!!!!!!!!!!', process.env.DB_URL)
+if (process.env.NODE_ENV === "production") {
+  mongoURI = process.env.DB_URL;
+} else {
+  mongoURI = "mongodb://localhost/apassport";
+}
+
 mongoose.connect(
-	"mongodb+srv://admin:admin@cluster0.n1wom.mongodb.net/auth?retryWrites=true&w=majority",
+	mongoURI,
 	{
 		useNewUrlParser: true,
-		// useUnifiedTopology: true
+		useUnifiedTopology: true
 	},
 	() => {
 		console.log('Mongoose is connected');
 	}
 );
 
+// MIDDLEWARE
 // Need to set up CORS like this for auth to work
 app.use(
 	cors({
+		// origin typically deployed react app and localhost
 		origin: ['https://c-passport.herokuapp.com/', 'http://localhost:3000/'],
 		credentials: true
 	})
 );
 
-// Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -59,7 +60,7 @@ app.use(passport.session())
 require('./passportConfig')(passport)
 
 
-// Routes
+// ROUTES
 app.post('/login', (req, res, next) => {
   // use local strategy we defined
   passport.authenticate('local', (err, user, info) => {
@@ -80,7 +81,7 @@ app.post('/register', (req, res) => {
 		if (err) throw err;
 		if (doc) res.send('User Already Exists');
 		if (!doc) {
-      const hashedPassword = await bcrypt.hash(req.body.password, 5)
+      const hashedPassword = await bcrypt.hash(req.body.password, 10)
 			const newUser = new User({
 				username: req.body.username,
 				password: hashedPassword
@@ -94,7 +95,7 @@ app.post('/register', (req, res) => {
 // req.user stores the user
 // req object will not be a user object containing session data
 // accessible throughout whole app
-app.get('/getUser', (req, res) => res.send(req.user));
+app.get('/user', (req, res) => res.send(req.user));
 
 app.set("port", process.env.PORT || 4000);
 
