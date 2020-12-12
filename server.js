@@ -108,7 +108,7 @@ app.get('/user', (req, res) => {
 		req.login(user, err => {
 			if (err) throw err
 			res.send(req.user)
-		})
+		})(req, res)
 	})
 	// console.log('user', req.user);
 	// res.json({data: 'hi', user: req.user})
