@@ -107,7 +107,7 @@ app.get('/user', (req, res) => {
 	passport.authenticate('local', (err, user) => {
 		req.login(user, err => {
 			if (err) throw err
-			res.send(user)
+			res.send(req.user)
 		})
 	})
 	// console.log('user', req.user);
