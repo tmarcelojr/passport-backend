@@ -30,8 +30,8 @@ module.exports = function(passport) {
   // serialize stores cookie inside browser
   // take user from local strategy we created and create cookie with the user id
 
-  passport.serializeUser((user, cb) => {
-    cb(null, user.id)
+  passport.serializeUser((user, done) => {
+    done(null, user.id)
   })
 
   // deserialize takes the cookie and unravels it and returns a user from it

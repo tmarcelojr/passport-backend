@@ -40,7 +40,8 @@ app.use(
 	cors({
 		// origins typically deployed react app and localhost
 		origin: [ 'https://c-passport.herokuapp.com', 'http://localhost:3000' ],
-		credentials: true
+		credentials: true,
+		methods: 'GET, HEAD, PUT, PATCH, POST, DELETE'
 	})
 );
 
@@ -102,7 +103,8 @@ app.post('/register', (req, res, next) => {
 // accessible throughout whole app
 app.get('/user', (req, res) => {
 	console.log('user', req.user);
-	res.send(req.user);
+	if(req.user) res.json(req.user)
+	// res.send(req.user);
 });
 
 // Logout
