@@ -69,15 +69,18 @@ app.post('/login', (req, res, next) => {
 		if (err) throw err;
 		if (!user) res.send('No User Exists');
 		else {
-			req.session.username = user.username
-			req.session.userId = user._id
+			// req.session.username = user.username
+			// req.session.userId = user._id
 
-			console.log('req user', req.session.username)
-			console.log('req id', req.session.userId)
+			// console.log('req user', req.session.username)
+			// console.log('req id', req.session.userId)
 			req.login(user, (err) => {
 				if (err) throw err;
-				console.log('we are inside login()', req.user)
-				res.send('Successfully Authenticated');
+				// console.log('we are inside login()', req.user)
+				res.send({
+					data: req.user,
+					message: 'Successfully Authenticated'
+				});
 				console.log(req.user);
 			});
 		}
