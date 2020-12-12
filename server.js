@@ -106,7 +106,10 @@ app.post('/register', (req, res, next) => {
 // accessible throughout whole app
 app.get('/user', (req, res) => {
 	console.log('user', req.user);
-	res.send(req.user);
+	res.send({
+		data: req.user,
+		user: user
+	});
 });
 
 // Logout
