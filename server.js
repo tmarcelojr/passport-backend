@@ -102,10 +102,11 @@ app.post('/register', (req, res, next) => {
 // accessible throughout whole app
 app.get('/user', (req, res) => {
 	console.log('user', req.user);
-	if(req.user) {
-		const resJson = res.json(req.user)
-		res.send(resJson)
-	}
+	res.send('hello')
+	// if(req.user) {
+	// 	const resJson = res.json(req.user)
+	// 	res.send(resJson)
+	// }
 	// res.send(req.user);
 });
 
