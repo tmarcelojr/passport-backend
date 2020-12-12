@@ -71,8 +71,12 @@ app.post('/login', (req, res, next) => {
 		else {
 			req.session.username = user.username
 			req.session.userId = user._id
+
+			console.log('req user', req.session.username)
+			console.log('req id', req.session.userId)
 			req.login(user, (err) => {
 				if (err) throw err;
+				console.log('we are inside login()', req.user)
 				res.send('Successfully Authenticated');
 				console.log(req.user);
 			});
@@ -106,7 +110,6 @@ app.post('/register', (req, res, next) => {
 // req object will not be a user object containing session data
 // accessible throughout whole app
 app.get('/user', (req, res) => {
-	console.log('req', req.session)
 	res.send(req.user)
 	// console.log('user', req.user);
 	// res.json({data: 'hi', user: req.user})
