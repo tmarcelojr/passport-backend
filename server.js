@@ -33,9 +33,12 @@ mongoose.connect(
 );
 
 // MIDDLEWARE
-// Need to set up CORS like this for auth to work
+
+// Pass in the actual value of secret
+app.use(cookieParser('this will be our secret code'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// Need to set up CORS like this for auth to work
 app.use(
 	cors({
 		// origins typically deployed react app and localhost
@@ -51,14 +54,12 @@ app.use(
 		resave: true,
 		saveUninitialized: true,
 		cookie: {
-			secure: true,
-			maxAge: (4 * 60 * 60 * 1000) // 4 hours cookie
+			secure: true
 		}
 	})
 );
 
-// Pass in the actual value of secret
-app.use(cookieParser('this will be our secret code'));
+
 app.use(passport.initialize())
 app.use(passport.session())
 require('./passportConfig')(passport)
