@@ -97,6 +97,11 @@ app.post('/register', (req, res) => {
 // accessible throughout whole app
 app.get('/user', (req, res) => res.send(req.user));
 
+// Logout
+app.get('/logout', () => {
+	req.logout()
+})
+
 app.set("port", process.env.PORT || 4000);
 
 app.listen(app.get("port"), () => {
