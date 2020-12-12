@@ -104,13 +104,19 @@ app.post('/register', (req, res, next) => {
 // req object will not be a user object containing session data
 // accessible throughout whole app
 app.get('/user', (req, res) => {
-	console.log('user', req.user);
+	passport.authenticate('local', (err, user) => {
+		req.login(user, err => {
+			if (err) throw err
+			res.send(user)
+		})
+	})
+	// console.log('user', req.user);
 	// res.json({data: 'hi', user: req.user})
 	// if(req.user) {
 	// 	const resJson = res.json(req.user)
 	// 	res.send(resJson)
 	// }
-	res.send(req.user);
+	// res.send(req.user);
 });
 
 // Logout
