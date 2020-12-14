@@ -53,7 +53,7 @@ app.use(
 	session({
 		// We will use secret in our cookie-parser
 		secret: 'this will be our secret code',
-		resave: false,
+		resave: true,
 		saveUninitialized: true,
 	})
 );
